@@ -1,16 +1,18 @@
-# Todo App — Full-Stack Case Study
+# Expense Tracker App — Full-Stack Case Study
 
 A full-stack Todo app built with React, Express, and Postgres. Demonstrates session-based authentication, session rehydration, auth-dependent data fetching, and conditional rendering — the same patterns students use in their full-stack projects.
 
 ## User Stories
 
 **Auth**
+
 - A user can register for an account with a username and password
 - A user can log in to an existing account
 - A user can log out
 - A returning user who has an active session is automatically logged in when they revisit the app
 
 **Todos**
+
 - A logged-in user can see all of their todos
 - A logged-in user can create a new todo by entering a title
 - A logged-in user can mark a todo as complete or incomplete
