@@ -5,7 +5,7 @@ const SALT_ROUNDS = 8;
 
 const seed = async () => {
   // Drop tables in reverse dependency order (todos references users via FK)
-  await pool.query('DROP TABLE IF EXISTS todos');
+  await pool.query('DROP TABLE IF EXISTS expenses');
   await pool.query('DROP TABLE IF EXISTS users');
 
   await pool.query(`
@@ -17,11 +17,13 @@ const seed = async () => {
   `);
 
   await pool.query(`
-    CREATE TABLE todos (
-      todo_id     SERIAL PRIMARY KEY,
-      title       TEXT NOT NULL,
-      is_complete BOOLEAN NOT NULL DEFAULT FALSE,
-      user_id     INT REFERENCES users(user_id) ON DELETE CASCADE
+    CREATE TABLE expenses (
+    expense_id    SERIAL PRIMARY KEY,
+    title         TEXT NOT NULL,
+    amount        NUMERIC(10, 2) NOT NULL,
+    category      TEXT NOT NULL,
+    date          DATE NOT NULL,
+    user_id       INTEGER REFERENCES users(user_id) ON DELETE CASCADE
     )
   `);
 
@@ -42,13 +44,13 @@ const seed = async () => {
   const [alice, bob] = users;
 
   await pool.query(`
-    INSERT INTO todos (title, is_complete, user_id) VALUES
-      ('Buy groceries',        FALSE, $1),
-      ('Walk the dog',         FALSE, $1),
-      ('Read a book',          TRUE,  $1),
-      ('Set up the database',  TRUE,  $2),
-      ('Build the API',        TRUE,  $2),
-      ('Build the frontend',   FALSE, $2)
+    INSERT INTO expenses (title, amount, category, date, user_id) VALUES
+      ('Grocery run', 87.43, 'Food', '2025-05-01', $1),
+      ('Netflix subscription', 15.99, 'Entertainment', '2025-05-02', $1),
+      ('Whole Foods haul', 134.76, 'Food', '2025-05-01', $2),
+      ('Uber to airport', 38.00, 'Transport', '2025-05-04', $2),
+      ('Electric bill', 110.00, 'Utilities', '2025-05-08', $1),
+      ('Coffee shop', 12.40, 'Food', '2025-05-09', $2)
   `, [alice.user_id, bob.user_id]);
 
   return users;

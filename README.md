@@ -1,8 +1,16 @@
-# Expense Tracker App — Full-Stack Case Study
+# Expense Tracker App
 
-A full-stack Todo app built with React, Express, and Postgres. Demonstrates session-based authentication, session rehydration, auth-dependent data fetching, and conditional rendering — the same patterns students use in their full-stack projects.
+A full-stack web application for tracking personal expenses. Built with React, Express, and PostgreSQL.
 
-## User Stories
+---
+
+## Mission Statement
+
+Expense Tracker is built for anyone who wants a simple, no-friction way to log and understand where their money is going. Whether you're a student budgeting for the month or just someone tired of wondering where your paycheck went — this app gives you a clear, categorized view of your spending without the complexity of spreadsheets or bloated finance tools.
+
+---
+
+## MVP User Stories
 
 **Auth**
 
@@ -11,35 +19,63 @@ A full-stack Todo app built with React, Express, and Postgres. Demonstrates sess
 - A user can log out
 - A returning user who has an active session is automatically logged in when they revisit the app
 
-**Todos**
+**Expenses**
 
-- A logged-in user can see all of their todos
-- A logged-in user can create a new todo by entering a title
-- A logged-in user can mark a todo as complete or incomplete
-- A logged-in user can delete a todo
+- A logged-in user can see all of their expenses
+- A logged-in user can add a new expense with a title, amount, category, and date
+- A logged-in user can delete an expense they no longer want to track
+
+---
+
+## Stretch Features
+
+- A user can edit an existing expense (update title, amount, category, or date)
+- A user can filter their expenses by category to see spending in a specific area
+- A user can see a summary dashboard showing their total spending per category
+
+---
 
 ## Schema
 
 ```
 users
-─────────────────────────────
+─────────────────────────────────────
 user_id       SERIAL PRIMARY KEY
 username      TEXT UNIQUE NOT NULL
 password_hash TEXT NOT NULL
 
-todos
-─────────────────────────────
-todo_id     SERIAL PRIMARY KEY
-title       TEXT NOT NULL
-is_complete BOOLEAN DEFAULT FALSE
-user_id     INTEGER REFERENCES users(user_id) ON DELETE CASCADE
+expenses
+─────────────────────────────────────
+expense_id    SERIAL PRIMARY KEY
+title         TEXT NOT NULL
+amount        NUMERIC(10, 2) NOT NULL
+category      TEXT NOT NULL
+date          DATE NOT NULL
+user_id       INTEGER REFERENCES users(user_id) ON DELETE CASCADE
 ```
 
-A user has many todos. Deleting a user cascades to delete all of their todos.
+A user has many expenses. Deleting a user cascades to delete all of their expenses.
+
+### Schema Diagram
+
+```
+┌──────────────────────┐          ┌─────────────────────────┐
+│         users        │          │        expenses         │
+├──────────────────────┤          ├─────────────────────────┤
+│ user_id   (PK)       │◄────┐    │ expense_id  (PK)        │
+│ username             │     └────│ user_id     (FK)        │
+│ password_hash        │          │ title                   │
+└──────────────────────┘          │ amount                  │
+                                  │ category                │
+                                  │ date                    │
+                                  └─────────────────────────┘
+```
+
+---
 
 ## API Contract
 
-### Auth endpoints
+### Auth Endpoints
 
 | Method | Endpoint             | Request Body             | Response                          |
 | ------ | -------------------- | ------------------------ | --------------------------------- |
@@ -48,14 +84,16 @@ A user has many todos. Deleting a user cascades to delete all of their todos.
 | DELETE | `/api/auth/logout`   | —                        | `{ message }`                     |
 | GET    | `/api/auth/me`       | —                        | `{ user_id, username }` or `null` |
 
-### Todo endpoints (all require authentication)
+### Expense Endpoints _(all require authentication)_
 
-| Method | Endpoint              | Request Body      | Response                                     |
-| ------ | --------------------- | ----------------- | -------------------------------------------- |
-| GET    | `/api/todos`          | —                 | `[{ todo_id, title, is_complete, user_id }]` |
-| POST   | `/api/todos`          | `{ title }`       | `{ todo_id, title, is_complete, user_id }`   |
-| PATCH  | `/api/todos/:todo_id` | `{ is_complete }` | `{ todo_id, title, is_complete, user_id }`   |
-| DELETE | `/api/todos/:todo_id` | —                 | `{ todo_id, title, is_complete, user_id }`   |
+| Method | Endpoint                    | Request Body                        | Response                                                   |
+| ------ | --------------------------- | ----------------------------------- | ---------------------------------------------------------- |
+| GET    | `/api/expenses`             | —                                   | `[{ expense_id, title, amount, category, date, user_id }]` |
+| POST   | `/api/expenses`             | `{ title, amount, category, date }` | `{ expense_id, title, amount, category, date, user_id }`   |
+| PATCH  | `/api/expenses/:expense_id` | `{ title, amount, category, date }` | `{ expense_id, title, amount, category, date, user_id }`   |
+| DELETE | `/api/expenses/:expense_id` | —                                   | `{ expense_id, title, amount, category, date, user_id }`   |
+
+---
 
 ## Setup
 
@@ -64,7 +102,7 @@ A user has many todos. Deleting a user cascades to delete all of their todos.
 Create a local Postgres database:
 
 ```sh
-createdb todos_casestudy
+createdb expense_tracker
 ```
 
 ### 2. Server
@@ -75,7 +113,14 @@ npm install
 cp .env.template .env
 ```
 
-Open `.env` and fill in your Postgres credentials and a session secret. Then seed the database:
+Open `.env` and fill in your Postgres connection string and a session secret:
+
+```
+DATABASE_URL=postgresql://localhost/expense_tracker
+SESSION_SECRET=your_secret_here
+```
+
+Seed the database:
 
 ```sh
 npm run db:seed
@@ -101,6 +146,8 @@ npm run dev
 
 The frontend runs on `http://localhost:5173`. The Vite dev proxy forwards all `/api` requests to the Express server so session cookies work correctly.
 
+---
+
 ## Seed Users
 
 After running `npm run db:seed`, these accounts are available:
@@ -110,35 +157,47 @@ After running `npm run db:seed`, these accounts are available:
 | alice    | password123 |
 | bob      | password123 |
 
+---
+
 ## Application Structure
 
 ```
-swe-casestudy-7-todo-app/
-├── frontend/               # React app (Vite)
+expense-tracker/
+├── frontend/                   # React app (Vite)
 │   ├── src/
-│   │   ├── App.jsx         # Root component: currentUser state, session rehydration, auth handlers
+│   │   ├── App.jsx             # Root component: currentUser state, session rehydration, auth handlers
 │   │   ├── adapters/
-│   │   │   ├── auth-adapters.js  # Fetch adapters for /api/auth/* endpoints
-│   │   │   └── todo-adapters.js  # Fetch adapters for /api/todos/* endpoints
+│   │   │   ├── auth-adapters.js      # Fetch wrappers for /api/auth/* endpoints
+│   │   │   └── expense-adapters.js   # Fetch wrappers for /api/expenses/* endpoints
 │   │   └── components/
-│   │       ├── AuthPage.jsx    # Login + Register forms (shown when logged out)
-│   │       ├── TodoPage.jsx    # Main app container (shown when logged in)
-│   │       ├── AddTodoForm.jsx # Form to create a new todo
-│   │       ├── TodoList.jsx    # Renders a list of TodoItems
-│   │       └── TodoItem.jsx    # Single todo: checkbox, title, delete button
-│   └── vite.config.js      # Proxies /api requests to Express in development
-└── server/                 # Express + Postgres API
-    ├── index.js            # App entry point, route definitions
+│   │       ├── AuthPage.jsx          # Login + Register forms (shown when logged out)
+│   │       ├── ExpensePage.jsx       # Main app container (shown when logged in)
+│   │       ├── AddExpenseForm.jsx    # Form to create a new expense
+│   │       ├── ExpenseList.jsx       # Renders a list of ExpenseItems
+│   │       └── ExpenseItem.jsx       # Single expense: title, amount, category, date, delete button
+│   └── vite.config.js          # Proxies /api requests to Express in development
+└── server/                     # Express + Postgres API
+    ├── index.js                # App entry point, route definitions
     ├── controllers/
-    │   ├── authControllers.js  # register, login, logout, getMe
-    │   └── todoControllers.js  # list, create, update, delete todos
+    │   ├── authControllers.js      # register, login, logout, getMe
+    │   └── expenseControllers.js   # list, create, update, delete expenses
     ├── models/
-    │   ├── userModel.js    # SQL queries for the users table
-    │   └── todoModel.js    # SQL queries for the todos table
+    │   ├── userModel.js            # SQL queries for the users table
+    │   └── expenseModel.js         # SQL queries for the expenses table
     ├── middleware/
     │   ├── checkAuthentication.js  # Blocks unauthenticated requests
     │   └── logRoutes.js            # Logs each incoming request
     └── db/
-        ├── pool.js         # Postgres connection pool
-        └── seed.js         # Creates tables and inserts sample data
+        ├── pool.js                 # Postgres connection pool
+        └── seed.js                 # Creates tables and inserts sample data
 ```
+
+---
+
+## Roadmap
+
+Stretch features planned for future iterations:
+
+- **Edit expenses** — Allow users to update any field on an existing expense
+- **Filter by category** — Let users view expenses scoped to a single category (e.g. "Food", "Transport")
+- **Category summary dashboard** — Show total spending per category so users can spot patterns at a glance
