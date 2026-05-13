@@ -11,44 +11,47 @@ module.exports.listTodos = async (req, res, next) => {
 
 module.exports.createExpense = async (req, res, next) => {
   try {
-    const { title } = req.body;
+    const { title, amount, category, date } = req.body;
     if (!title) return res.status(400).send({ error: 'Title is required.' });
-    const todo = await expenseModel.create(title, req.session.user_id);
+    if (!amount) return res.status(400).send({ error: 'Amount is required.' });
+    if (!category) return res.status(400).send({ error: 'Category is required.' });
+    if (!date) return res.status(400).send({ error: 'Date is required.' });
+    const expense = await expenseModel.create({title, amount, category, date}, req.session.user_id);
     res.status(201).send(expense);
   } catch (err) {
     next(err);
   }
 };
 
-module.exports.updateTodo = async (req, res, next) => {
+module.exports.updateExpense = async (req, res, next) => {
   try {
-    const { todo_id } = req.params;
-    const todo = await todoModel.find(todo_id);
-    if (!todo) return res.status(404).send({ error: 'Todo not found.' });
-    if (todo.user_id !== req.session.user_id) {
+    const { expense_id } = req.params;
+    const expense = await expenseModel.find(expense_id);
+    if (!expense) return res.status(404).send({ error: 'Expense not found.' });
+    if (expense.user_id !== req.session.user_id) {
       return res.status(403).send({ error: 'Not authorized.' });
     }
-    const updatedTodo = await todoModel.update(todo_id, req.body);
-    res.send(updatedTodo);
+    const updatedExpense = await expenseModel.update(expense_id, req.body);
+    res.send(updatedExpense);
   } catch (err) {
     next(err);
   }
 };
 
-module.exports.deleteTodo = async (req, res, next) => {
+module.exports.deleteExpense = async (req, res, next) => {
   try {
-    const { todo_id } = req.params;
+    const { expense_id } = req.params;
 
-    // First find the todo to verify ownership
-    const todo = await todoModel.find(todo_id);
-    if (!todo) return res.status(404).send({ error: 'Todo not found.' });
-    if (todo.user_id !== req.session.user_id) {
+    // First find the expense to verify ownership
+    const expense = await expenseModel.find(expense_id);
+    if (!expense) return res.status(404).send({ error: 'Expense not found.' });
+    if (expense.user_id !== req.session.user_id) {
       return res.status(403).send({ error: 'Not authorized.' });
     }
 
-    // Destroy the todo only after ownership has been verified
-    const destroyedTodo = await todoModel.destroy(todo_id);
-    res.send(destroyedTodo);
+    // Destroy the expense only after ownership has been verified
+    const destroyedExpense = await expenseModel.destroy(expense_id);
+    res.send(destroyedExpense);
   } catch (err) {
     next(err);
   }
