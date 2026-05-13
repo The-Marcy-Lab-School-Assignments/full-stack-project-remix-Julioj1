@@ -1,20 +1,20 @@
-const todoModel = require('../models/todoModel');
+const expenseModel = require('../models/expenseModel');
 
 module.exports.listTodos = async (req, res, next) => {
   try {
-    const todos = await todoModel.listByUser(req.session.user_id);
-    res.send(todos);
+    const expense = await expenseModel.listByUser(req.session.user_id);
+    res.send(expenses);
   } catch (err) {
     next(err);
   }
 };
 
-module.exports.createTodo = async (req, res, next) => {
+module.exports.createExpense = async (req, res, next) => {
   try {
     const { title } = req.body;
     if (!title) return res.status(400).send({ error: 'Title is required.' });
-    const todo = await todoModel.create(title, req.session.user_id);
-    res.status(201).send(todo);
+    const todo = await expenseModel.create(title, req.session.user_id);
+    res.status(201).send(expense);
   } catch (err) {
     next(err);
   }
