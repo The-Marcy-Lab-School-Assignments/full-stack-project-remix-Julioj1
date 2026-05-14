@@ -6,7 +6,7 @@ A full-stack web application for tracking personal expenses. Built with React, E
 
 ## Mission Statement
 
-Expense Tracker is built for anyone who wants a simple, no-friction way to log and understand where their money is going. Whether you're a student budgeting for the month or just someone tired of wondering where your paycheck went — this app gives you a clear, categorized view of your spending without the complexity of spreadsheets or bloated finance tools.
+Expense Tracker is built for anyone who wants a simple way to log and understand where their money is going. Whether you're a student budgeting for the month or just someone tired of wondering where your paycheck went — this app gives you a clear, categorized view of your spending without the complexity of spreadsheets or bloated finance tools.
 
 ---
 
@@ -84,7 +84,7 @@ A user has many expenses. Deleting a user cascades to delete all of their expens
 | DELETE | `/api/auth/logout`   | —                        | `{ message }`                     |
 | GET    | `/api/auth/me`       | —                        | `{ user_id, username }` or `null` |
 
-### Expense Endpoints _(all require authentication)_
+### Expense Endpoints
 
 | Method | Endpoint                    | Request Body                        | Response                                                   |
 | ------ | --------------------------- | ----------------------------------- | ---------------------------------------------------------- |
@@ -113,14 +113,7 @@ npm install
 cp .env.template .env
 ```
 
-Open `.env` and fill in your Postgres connection string and a session secret:
-
-```
-DATABASE_URL=postgresql://localhost/expense_tracker
-SESSION_SECRET=your_secret_here
-```
-
-Seed the database:
+Open .env and fill in your Postgres credentials and a session secret. Then seed the database:
 
 ```sh
 npm run db:seed
