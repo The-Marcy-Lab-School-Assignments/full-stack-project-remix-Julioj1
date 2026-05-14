@@ -1,6 +1,6 @@
 const expenseModel = require('../models/expenseModel');
 
-module.exports.listTodos = async (req, res, next) => {
+module.exports.listExpenses = async (req, res, next) => {
   try {
     const expense = await expenseModel.listByUser(req.session.user_id);
     res.send(expenses);
