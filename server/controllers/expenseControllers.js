@@ -2,7 +2,7 @@ const expenseModel = require('../models/expenseModel');
 
 module.exports.listExpenses = async (req, res, next) => {
   try {
-    const expense = await expenseModel.listByUser(req.session.user_id);
+    const expenses = await expenseModel.listByUser(req.session.user_id);
     res.send(expenses);
   } catch (err) {
     next(err);

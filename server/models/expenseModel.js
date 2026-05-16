@@ -23,7 +23,7 @@ module.exports.create = async (expense, user_id) => {
 
 // Updates an existing expense (update title, amount, category, or date). Returns the updated row.
 module.exports.update = async (expense_id, { title, amount, category, date }) => {
-  const query = 'UPDATE expenses SET title = $1, amount = $2, category = $3, date = 4 WHERE expense_id = $5 RETURNING *';
+  const query = 'UPDATE expenses SET title = $1, amount = $2, category = $3, date = $4 WHERE expense_id = $5 RETURNING *';
   const { rows } = await pool.query(query, [title, amount, category, date, expense_id]);
   return rows[0];
 };
