@@ -34,7 +34,7 @@ app.get('/api/auth/me', authControllers.getMe);
 app.delete('/api/auth/logout', authControllers.logout);
 
 // ====================================
-// Eexpense routes (all require authentication)
+// Expense routes (all require authentication)
 // ====================================
 
 app.get('/api/expenses', checkAuthentication, expenseControllers.listExpenses);
