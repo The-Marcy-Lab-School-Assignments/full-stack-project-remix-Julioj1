@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { fetchAllTodos } from '../adapters/todo-adapters';
-import AddTodoForm from './AddTodoForm';
-import TodoList from './TodoList';
+import { fetchAllExpenses } from '../adapters/expense-adapters';
+import AddExpenseForm from './AddExpenseForm';
+import ExpenseList from './ExpenseList';
 
-function TodoPage({ currentUser, handleLogout }) {
-  const [todos, setTodos] = useState([]);
+function ExpensePage({ currentUser, handleLogout }) {
+  const [expenses, setExpenses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -12,20 +12,20 @@ function TodoPage({ currentUser, handleLogout }) {
   // It is also used within the AddTodoForm and TodoList
   // to re-fetch the todos when a mutation action is performed
   // such as creating, deleting, or updating a todo.
-  const loadTodos = async () => {
+  const loadExpenses = async () => {
     setIsLoading(true);
     setError(null);
-    const { data, error: fetchError } = await fetchAllTodos();
+    const { data, error: fetchError } = await fetchAllExpenses();
     if (fetchError) {
       setError(fetchError.message);
     } else {
-      setTodos(data);
+      setExpenses(data);
     }
     setIsLoading(false);
   };
 
   useEffect(() => {
-    loadTodos();
+    loadExpenses();
   }, []);
 
   return (
@@ -34,12 +34,12 @@ function TodoPage({ currentUser, handleLogout }) {
         <span>Welcome, <strong>{currentUser.username}</strong>!</span>
         <button onClick={handleLogout}>Log Out</button>
       </div>
-      <AddTodoForm loadTodos={loadTodos} />
-      {isLoading && <p>Loading todos...</p>}
+      <AddExpenseForm loadExpenses={loadExpenses} />
+      {isLoading && <p>Loading expenses...</p>}
       {error && <p className="error">Something went wrong: {error}</p>}
-      <TodoList todos={todos} loadTodos={loadTodos} />
+      <ExpenseList expenses={expenses} loadExpenses={loadExpenses} />
     </section>
   );
 }
 
-export default TodoPage;
+export default ExpensePage;
