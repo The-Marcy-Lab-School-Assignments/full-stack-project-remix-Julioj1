@@ -13,8 +13,8 @@ export const fetchAllExpenses = async () => {
   return handleFetch('/api/expenses');
 };
 
-export const createExpense = async (title, amount, category, date) => {
-  return handleFetch('/api/expense', {
+export const createExpense = async ({ title, amount, category, date }) => {
+  return handleFetch('/api/expenses', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ title, amount, category, date }),
@@ -22,13 +22,13 @@ export const createExpense = async (title, amount, category, date) => {
 };
 
 export const updateExpense = async (expense_id, updates) => {
-  return handleFetch(`/api/expense/${expense_id}`, {
+  return handleFetch(`/api/expenses/${expense_id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updates),
   });
 };
 
-export const deleteTodo = async (expense_id) => {
+export const deleteExpense = async (expense_id) => {
   return handleFetch(`/api/expenses/${expense_id}`, { method: 'DELETE' });
 };

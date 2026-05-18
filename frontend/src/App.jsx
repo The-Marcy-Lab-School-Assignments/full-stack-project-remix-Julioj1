@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getMe, login, register, logout } from './adapters/auth-adapters';
 import AuthPage from './components/AuthPage';
-import TodoPage from './components/TodoPage';
+import ExpensePage from './components/ExpensePage';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -38,9 +38,9 @@ function App() {
 
   return (
     <main>
-      <h1>Todo App</h1>
+      <h1>Expense App</h1>
       {currentUser
-        ? <TodoPage currentUser={currentUser} handleLogout={handleLogout} />
+        ? <ExpensePage currentUser={currentUser} handleLogout={handleLogout} />
         : <AuthPage handleLogin={handleLogin} handleRegister={handleRegister} />
       }
     </main>

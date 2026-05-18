@@ -10,7 +10,7 @@ function AddExpenseForm({ loadExpenses }) {
     const date = form.elements.date.value;
     if (!title || !amount || !category || !date) return;
 
-    const { error } = await createExpense({ title, ammount, category, date });
+    const { error } = await createExpense({ title, amount, category, date });
     if (error) return console.error(error);
 
     await loadExpenses();
@@ -20,7 +20,7 @@ function AddExpenseForm({ loadExpenses }) {
   return (
     <form id="add-expense-form" onSubmit={handleSubmit}>
       <input type="text" name='title' placeholder='What did I spend in?'/>
-      <input type="text" name="amount" placeholder="How much did I spend?" step="0.01" min="0"/>
+      <input type="number" name="amount" placeholder="How much did I spend?" step="0.01" min="0"/>
       <select name="category" id="category-list">
         <option value="">Select a category</option>
         <option value="Food">Food</option>

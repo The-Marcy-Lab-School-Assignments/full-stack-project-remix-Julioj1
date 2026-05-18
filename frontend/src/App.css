@@ -1,4 +1,4 @@
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -6,180 +6,254 @@
 
 body {
   font-family: system-ui, sans-serif;
-  background: #f5f5f5;
+  background-color: #f4f6f0;
   color: #1a1a1a;
+  min-height: 100vh;
 }
 
-main {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-h1 {
-  font-size: 1.75rem;
-  margin-bottom: 1.5rem;
-  color: #1d4ed8;
-}
-
-/* Auth forms */
-#auth-section {
+#root {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
   display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 }
 
-form {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  flex: 1;
-}
-
-form h2 {
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  color: #374151;
-}
-
-form input {
-  display: block;
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 0.95rem;
-}
-
-form button[type='submit'] {
-  background: #1d4ed8;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.95rem;
-}
-
-.error {
-  color: #dc2626;
-  font-size: 0.85rem;
-  margin-bottom: 0.5rem;
-}
-
-/* Logged-in view */
-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
+/* ====================================
+   Header / User controls
+==================================== */
 
 #user-controls {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background: white;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: #3B6D11;
+  border-radius: 12px;
+}
+
+#user-controls span {
+  color: #C0DD97;
+  font-size: 14px;
+}
+
+#user-controls strong {
+  color: #EAF3DE;
 }
 
 #user-controls button {
-  background: #dc2626;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-/* Add todo form */
-#add-todo-form {
-  display: flex;
-  gap: 0.5rem;
-  background: white;
-  padding: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: #EAF3DE;
+  border: 0.5px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  flex-direction: column;
-}
-
-#add-todo-form label {
-  font-size: 0.9rem;
-  color: #374151;
-  display: none;
-}
-
-#add-todo-form input {
-  flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 0.95rem;
-  margin-bottom: 0;
-}
-
-#add-todo-form button {
-  background: #1d4ed8;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 13px;
   cursor: pointer;
-  font-size: 0.95rem;
 }
 
-/* Todo list */
-#todo-list {
+#user-controls button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ====================================
+   Cards
+==================================== */
+
+.card {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.card h2 {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+/* ====================================
+   Add expense form
+==================================== */
+
+#add-expense-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+#add-expense-form input,
+#add-expense-form select {
+  height: 36px;
+  border: 0.5px solid #ccc;
+  border-radius: 8px;
+  padding: 0 10px;
+  font-size: 14px;
+  width: 100%;
+  background: #fff;
+}
+
+#add-expense-form button {
+  height: 36px;
+  background: #3B6D11;
+  color: #EAF3DE;
+  border: none;
+  border-radius: 8px;
+  padding: 0 20px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#add-expense-form button:hover {
+  background: #27500A;
+}
+
+/* ====================================
+   Expense list
+==================================== */
+
+#expense-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
-.todo-item {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  display: flex;
+.expense-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
   align-items: center;
-  gap: 0.75rem;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f7f9f4;
+  border-radius: 8px;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
 }
 
-.todo-item input[type='checkbox'] {
-  width: 1rem;
-  height: 1rem;
-  cursor: pointer;
-  flex-shrink: 0;
+.expense-title {
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.todo-item span {
-  flex: 1;
-  font-size: 0.95rem;
+.expense-amount {
+  font-size: 14px;
+  font-weight: 500;
+  color: #3B6D11;
 }
 
-.todo-item span.completed {
-  text-decoration: line-through;
-  color: #9ca3af;
+.expense-date {
+  font-size: 12px;
+  color: #666;
 }
 
-.delete-btn {
-  background: #dc2626;
-  color: white;
+/* Category badges */
+.badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-weight: 500;
+}
+
+.badge-food         { background: #EAF3DE; color: #27500A; }
+.badge-transport    { background: #E6F1FB; color: #0C447C; }
+.badge-entertainment{ background: #EEEDFE; color: #3C3489; }
+.badge-utilities    { background: #FAEEDA; color: #633806; }
+.badge-health       { background: #FAECE7; color: #712B13; }
+.badge-shopping     { background: #FBEAF0; color: #72243E; }
+
+/* Delete button */
+.btn-delete {
+  background: none;
   border: none;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
+  color: #999;
   cursor: pointer;
-  font-size: 0.85rem;
-  flex-shrink: 0;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 4px;
+  line-height: 1;
 }
 
-@media (min-width: 480px) {
-  #add-todo-form {
-    flex-direction: row;
-    align-items: flex-end;
+.btn-delete:hover {
+  color: #A32D2D;
+  background: #FCEBEB;
+}
+
+/* ====================================
+   Auth page
+==================================== */
+
+#auth-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 400px;
+  margin: 4rem auto;
+}
+
+#auth-section form {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#auth-section h2 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+#auth-section input {
+  height: 36px;
+  border: 0.5px solid #ccc;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+#auth-section button {
+  height: 36px;
+  background: #3B6D11;
+  color: #EAF3DE;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+#auth-section button:hover {
+  background: #27500A;
+}
+
+/* ====================================
+   Utility
+==================================== */
+
+.error {
+  color: #A32D2D;
+  font-size: 13px;
+}
+
+/* ====================================
+   Mobile
+==================================== */
+
+@media (max-width: 520px) {
+  .expense-item {
+    grid-template-columns: 1fr auto auto;
+  }
+
+  .expense-date {
+    display: none;
+  }
+
+  #add-expense-form {
+    grid-template-columns: 1fr 1fr;
   }
 }
