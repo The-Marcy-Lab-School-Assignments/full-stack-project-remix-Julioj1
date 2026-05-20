@@ -123,13 +123,18 @@ body {
 
 .expense-item {
   display: grid;
-  grid-template-columns: 1fr auto auto auto auto;
+  grid-template-columns: 1fr auto auto auto auto auto;
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
   background: #f7f9f4;
   border-radius: 8px;
   border: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.expense-item input,
+.expense-item select {
+  width: 100%;
 }
 
 .expense-title {
@@ -146,6 +151,28 @@ body {
 .expense-date {
   font-size: 12px;
   color: #666;
+}
+
+#category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 1rem 0;
+}
+
+.filter-btn {
+  padding: 6px 14px;
+  border: 0.5px solid #ccc;
+  border-radius: 99px;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background: #3B6D11;
+  color: #EAF3DE;
+  border-color: #3B6D11;
 }
 
 /* Category badges */
