@@ -28,9 +28,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.25rem;
+  padding: 1.25rem 1.5rem;
   background: #3B6D11;
   border-radius: 12px;
+  margin-bottom: 0.5rem;
 }
 
 #user-controls span {
@@ -64,13 +65,14 @@ body {
   background: #ffffff;
   border: 0.5px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
-  padding: 1.25rem;
+  padding: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .card h2 {
   font-size: 15px;
   font-weight: 500;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 /* ====================================
@@ -81,6 +83,10 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 10px;
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem;
 }
 
 #add-expense-form input,
@@ -111,6 +117,38 @@ body {
 }
 
 /* ====================================
+   Category filter
+==================================== */
+
+#category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0.25rem 0;
+}
+
+.filter-btn {
+  padding: 6px 16px;
+  border: 0.5px solid #ccc;
+  border-radius: 99px;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filter-btn:hover {
+  border-color: #3B6D11;
+  color: #3B6D11;
+}
+
+.filter-btn.active {
+  background: #3B6D11;
+  color: #EAF3DE;
+  border-color: #3B6D11;
+}
+
+/* ====================================
    Expense list
 ==================================== */
 
@@ -118,7 +156,7 @@ body {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .expense-item {
@@ -126,15 +164,10 @@ body {
   grid-template-columns: 1fr auto auto auto auto auto;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
-  background: #f7f9f4;
-  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  background: #ffffff;
+  border-radius: 10px;
   border: 0.5px solid rgba(0, 0, 0, 0.08);
-}
-
-.expense-item input,
-.expense-item select {
-  width: 100%;
 }
 
 .expense-title {
@@ -153,28 +186,6 @@ body {
   color: #666;
 }
 
-#category-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 1rem 0;
-}
-
-.filter-btn {
-  padding: 6px 14px;
-  border: 0.5px solid #ccc;
-  border-radius: 99px;
-  background: #fff;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.filter-btn.active {
-  background: #3B6D11;
-  color: #EAF3DE;
-  border-color: #3B6D11;
-}
-
 /* Category badges */
 .badge {
   font-size: 11px;
@@ -190,16 +201,15 @@ body {
 .badge-health       { background: #FAECE7; color: #712B13; }
 .badge-shopping     { background: #FBEAF0; color: #72243E; }
 
-/* Delete button */
+/* Buttons */
 .btn-delete {
   background: none;
   border: none;
   color: #999;
   cursor: pointer;
-  font-size: 16px;
-  padding: 4px;
+  font-size: 14px;
+  padding: 4px 8px;
   border-radius: 4px;
-  line-height: 1;
 }
 
 .btn-delete:hover {
@@ -223,10 +233,10 @@ body {
   background: #ffffff;
   border: 0.5px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 #auth-section h2 {
@@ -259,6 +269,15 @@ body {
 }
 
 /* ====================================
+   Chart
+==================================== */
+
+.card {
+  margin-top: 0.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* ====================================
    Utility
 ==================================== */
 
@@ -282,5 +301,14 @@ body {
 
   #add-expense-form {
     grid-template-columns: 1fr 1fr;
+  }
+
+  #category-filter {
+    gap: 6px;
+  }
+
+  .filter-btn {
+    font-size: 12px;
+    padding: 5px 12px;
   }
 }
